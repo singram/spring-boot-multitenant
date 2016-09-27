@@ -55,5 +55,5 @@ To install the 1.6.0:
 
 ### API interactions
 
-    curl localhost:8080/person/1
-    curl -i -X POST -H "Content-Type:application/json" -d '{ "firstName" : "Frodo", "lastName" : "Baggins" }' http://localhost:8080/person/
+    curl -H "X-TenantID:some_tenant" localhost:8080/person/1
+    curl -i -X POST -H "X-TenantID:some_tenant" -H "Content-Type:application/json" -d '{ "firstName" : "Frodo", "lastName" : "Baggins" }' http://localhost:8080/person/
