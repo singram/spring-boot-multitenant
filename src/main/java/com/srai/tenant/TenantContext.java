@@ -2,13 +2,26 @@ package com.srai.tenant;
 
 public class TenantContext {
 
-  private static ThreadLocal<Object> currentTenant = new ThreadLocal<>();
+  final public static String DEFAULT_TENANT = "test";
 
-  public static void setCurrentTenant(Object tenant) {
+  private static ThreadLocal<String> currentTenant = new ThreadLocal<String>()
+  {
+    @Override
+    protected String initialValue() {
+      return DEFAULT_TENANT;
+    }
+  };
+
+  public static void setCurrentTenant(String tenant) {
     currentTenant.set(tenant);
   }
-  public static Object getCurrentTenant() {
+
+  public static String getCurrentTenant() {
     return currentTenant.get();
+  }
+
+  public static void clear() {
+    currentTenant.remove();
   }
 
 }

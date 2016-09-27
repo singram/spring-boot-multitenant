@@ -3,6 +3,7 @@ package com.srai.tenant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,5 +32,12 @@ public class TenantInterceptor extends HandlerInterceptorAdapter {
     }
 
     return tenantSet;
+  }
+
+  @Override
+  public void postHandle(
+      HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
+          throws Exception {
+    TenantContext.clear();
   }
 }

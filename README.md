@@ -1,5 +1,5 @@
 # spring-boot-multitenant
-Multi tenancy example using spring boot
+Multi tenancy example using spring boot and the Hibernate SCHEMA strategy.
 
 ## Getting started
 
@@ -43,17 +43,20 @@ To install the 1.6.0:
 
 ## Usage
 
-### Prime the database
+### Prime the database (only needs to be done once)
 
     docker-compose up mysql
-    mysql -u myuser -pmypass -h 127.0.0.1 test < db_migrations.sql
+    mysql -u root   -p1234   -h 127.0.0.1 -e "GRANT ALL ON *.* TO 'myuser'@'%'; FLUSH PRIVILEGES;"
+    mysql -u myuser -pmypass -h 127.0.0.1 < db_migration.sql
+
+At this point there should be two identical databases `tenant_a` and `tenant_b` with privileges such that the `myuser` account can access both
 
 ### Start the app
 
-    ./gradlew build buildDocker
+    ./gradlew clean build buildDocker
     docker-compose up api
 
 ### API interactions
 
-    curl -H "X-TenantID:some_tenant" localhost:8080/person/1
-    curl -i -X POST -H "X-TenantID:some_tenant" -H "Content-Type:application/json" -d '{ "firstName" : "Frodo", "lastName" : "Baggins" }' http://localhost:8080/person/
+    curl -H "X-TenantID:tenant_a" localhost:8080/person/1
+    curl -i -X POST -H "X-TenantID:tenant_a" -H "Content-Type:application/json" -d '{ "firstName" : "Frodo", "lastName" : "Baggins" }' http://localhost:8080/person/
